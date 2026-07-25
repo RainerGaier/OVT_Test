@@ -183,6 +183,10 @@ unauthenticated visitors to `/signin`. GitHub OAuth is configured but commented
 out, so enabling social login on the day is a small change rather than a
 rebuild.
 
+On Vercel, `AUTH_TRUST_HOST=true` is set and `AUTH_URL` is left unset, so Auth.js
+derives the callback base URL from each deployment's own host — production and
+every preview URL work without per-deployment configuration.
+
 ### Chat
 
 `POST /api/chat` accepts a conversation id and a message, validates ownership of
@@ -271,7 +275,8 @@ fast and leaves nothing behind.
 | `DATABASE_URL` | Postgres connection string |
 | `DATABASE_URL_TEST` | Test Postgres connection string (port 5433); read by Vitest and Playwright |
 | `AUTH_SECRET` | Auth.js signing secret |
-| `AUTH_URL` | Base URL for callbacks |
+| `AUTH_TRUST_HOST` | `true` on Vercel; lets Auth.js infer the callback base URL from the request host |
+| `AUTH_URL` | Callback base URL for local development only (e.g. `http://localhost:3000`); unset on Vercel |
 | `ANTHROPIC_API_KEY` | Claude API key |
 | `ANTHROPIC_MODEL` | Model id; defaults to `claude-sonnet-5` |
 | `BLOB_READ_WRITE_TOKEN` | Vercel Blob access |
@@ -281,16 +286,24 @@ fast and leaves nothing behind.
 Railway hosts a Postgres service with public networking enabled, because Vercel
 connects from outside Railway's private network.
 
-Vercel builds with `prisma generate && prisma migrate deploy && next build`, so
-migrations apply on every deploy and are never run by hand.
+Vercel builds with `prisma generate && next build`. Migrations are applied by a
+build step that runs `prisma migrate deploy` only when `VERCEL_ENV=production`,
+so production migrates on every prod deploy and is never migrated by hand — while
+preview builds skip migration entirely and run against the schema production
+currently has. This prevents an unmerged branch from reshaping the shared
+database at preview-build time.
 
 `DATABASE_URL` on Vercel carries `?connection_limit=1&pool_timeout=20`. Each
 serverless function opens its own connection, and without this the database can
 exhaust its connection limit during judging.
 
-Preview deployments point at the same Railway database as production. For a solo
-hackathon this is the right trade — one database, no surprises — but it is a
-deliberate choice rather than an oversight.
+Preview deployments read and write the same Railway database as production, but
+do not migrate it (see the build command above). For a solo hackathon this is the
+right trade — one database, and previews can never silently reshape production's
+schema — but it is a deliberate choice rather than an oversight. The consequence
+to remember: a preview branch's code runs against production's current schema, so
+a branch that needs a new migration won't work on preview until it is merged and
+deployed to production.
 
 The deployment is rehearsed end to end before the hackathon, with all four
 slices verified working in production. Deploying for the first time under time
