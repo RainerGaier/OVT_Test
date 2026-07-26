@@ -1,7 +1,6 @@
 # Hackathon Starter
 
-<!-- TODO: replace OWNER/REPO with your GitHub slug once the repo has a remote. -->
-![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/RainerGaier/OVT_Test/actions/workflows/ci.yml/badge.svg)
 
 A deployed, tested Next.js starter: authentication, Claude, uploads, and charts.
 
