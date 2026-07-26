@@ -1,6 +1,6 @@
 import type { NextAuthConfig } from "next-auth";
 
-// Edge-safe: no Prisma, no argon2. Drives middleware route protection.
+// Edge-safe: no Prisma, no argon2. Drives proxy route protection.
 export const authConfig = {
   pages: {
     signIn: "/signin",

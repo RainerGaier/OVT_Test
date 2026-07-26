@@ -25,7 +25,7 @@ test("unauthenticated visit to /dashboard redirects to /signin", async ({
   page,
 }) => {
   await page.goto("/dashboard");
-  // Middleware redirects to /signin with a ?callbackUrl=... query, so match the
+  // Proxy redirects to /signin with a ?callbackUrl=... query, so match the
   // path loosely rather than requiring the URL to end at "signin".
   await page.waitForURL(/\/signin/);
   await expect(page.getByRole("heading", { name: /sign in/i })).toBeVisible();
