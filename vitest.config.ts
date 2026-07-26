@@ -8,6 +8,20 @@ export default defineConfig({
     alias: { "@": path.resolve(__dirname, "./src") },
   },
   test: {
+    // next-auth (pure ESM) imports bare "next/server" / "next/headers" /
+    // "next/navigation" with no file extension. Next.js 16's package.json
+    // has no "exports" map, so those subpaths only resolve through Node's
+    // legacy CJS extension-probing (what webpack/turbopack + `require` use)
+    // — not strict ESM resolution. Vitest externalizes next-auth (pure ESM)
+    // for SSR and hands it to Node's native ESM loader, which enforces
+    // strict resolution and throws ERR_MODULE_NOT_FOUND on these bare
+    // specifiers. Inlining next-auth routes it through Vite's own resolver
+    // instead, which does extension-probing like a bundler, so it resolves.
+    server: {
+      deps: {
+        inline: [/next-auth/, /@auth\//],
+      },
+    },
     projects: [
       {
         extends: true,
@@ -24,7 +38,10 @@ export default defineConfig({
           name: "node",
           environment: "node",
           globalSetup: ["./tests/helpers/global-setup.ts"],
-          setupFiles: ["./tests/helpers/truncate-each.ts"],
+          setupFiles: [
+            "./tests/helpers/test-env.ts",
+            "./tests/helpers/truncate-each.ts",
+          ],
           include: ["tests/{unit,integration}/**/*.test.ts"],
           // `fileParallelism` is a root-only option in Vitest 3 (not a valid
           // ProjectConfig key, and setting it per-project does not actually
