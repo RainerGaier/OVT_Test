@@ -6,7 +6,7 @@
         <mxCell id="1" parent="0" />
 
         <!-- Container boxes (drawn first, behind components) -->
-        <mxCell id="vercel" value="Vercel — Next.js 15 (App Router: UI + /api route handlers)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;dashed=1;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=6;" vertex="1" parent="1">
+        <mxCell id="vercel" value="Vercel — Next.js 16 (App Router: UI + /api route handlers)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;dashed=1;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=6;" vertex="1" parent="1">
           <mxGeometry x="40" y="140" width="560" height="420" as="geometry" />
         </mxCell>
         <mxCell id="external" value="External services" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;dashed=1;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=6;" vertex="1" parent="1">

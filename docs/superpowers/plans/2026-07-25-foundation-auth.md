@@ -4,9 +4,9 @@
 
 **Goal:** Stand up a deployed, tested Next.js application with credentials authentication, so the four hackathon capability slices (chat, upload, charts) can be built on a proven foundation.
 
-**Architecture:** One Next.js 15 App Router application serves UI and its own `/api` routes. Postgres sits behind it (Docker locally, Railway in production). Route handlers stay thin and delegate to `src/lib/` modules that each own one external dependency. Auth.js v5 uses a Credentials provider with argon2 hashing and JWT-backed sessions, while users/accounts persist in Postgres. An edge-safe auth config drives `middleware.ts` route protection; the full Node config drives the API. The whole thing is deployed to Vercel + Railway and rehearsed before the hackathon.
+**Architecture:** One Next.js 16 App Router application serves UI and its own `/api` routes. Postgres sits behind it (Docker locally, Railway in production). Route handlers stay thin and delegate to `src/lib/` modules that each own one external dependency. Auth.js v5 uses a Credentials provider with argon2 hashing and JWT-backed sessions, while users/accounts persist in Postgres. An edge-safe auth config drives `middleware.ts` route protection; the full Node config drives the API. The whole thing is deployed to Vercel + Railway and rehearsed before the hackathon.
 
-**Tech Stack:** Next.js 15 (App Router, React 19, TypeScript), Tailwind 4 + shadcn/ui, Prisma + Postgres 16, Auth.js v5 (`next-auth@beta`) + `@auth/prisma-adapter` + argon2, Zod, Vitest + React Testing Library + Playwright, Docker Compose, GitHub Actions, Vercel + Railway.
+**Tech Stack:** Next.js 16 (App Router, React 19, TypeScript), Tailwind 4 + shadcn/ui, Prisma + Postgres 16, Auth.js v5 (`next-auth@beta`) + `@auth/prisma-adapter` + argon2, Zod, Vitest + React Testing Library + Playwright, Docker Compose, GitHub Actions, Vercel + Railway.
 
 **Architecture diagram:** [`docs/superpowers/architecture.drawio`](../architecture.drawio) — the full target solution (all four slices + deployment), color-coded so the green components are what this plan delivers and the amber ones are added by the later slice plans. Open it in [diagrams.net](https://app.diagrams.net) or the VS Code Draw.io extension.
 
@@ -14,7 +14,7 @@
 
 Every task's requirements implicitly include this section. Values are copied verbatim from `docs/superpowers/specs/2026-07-25-hackathon-starter-design.md`.
 
-- **Framework:** Next.js 15, App Router, React 19, TypeScript.
+- **Framework:** Next.js 16, App Router, React 19, TypeScript.
 - **Styling:** Tailwind 4 + shadcn/ui.
 - **Data layer:** Prisma + Postgres 16 (Docker image `postgres:16.4`).
 - **Auth:** Auth.js v5, Credentials provider, argon2. Sessions are JWT-backed; users and accounts persist in Postgres. GitHub OAuth configured but commented out.
@@ -1901,7 +1901,7 @@ git commit -m "feat: gate preview migrations in Vercel build and document deploy
 
 Coverage of the spec's Foundation + Auth scope:
 
-- **App + styling:** Task 1 (Next 15 App Router, Tailwind 4, shadcn).
+- **App + styling:** Task 1 (Next 16 App Router, Tailwind 4, shadcn).
 - **Data layer:** Task 3 (Prisma, Postgres 16, all tables with `userId` + cascade, singleton).
 - **Local dev:** Task 2 (Docker dev + test Postgres, healthchecks, tmpfs, `db:*` scripts), Task 3 (`db:reset`, `db:studio`).
 - **Auth slice:** Tasks 5–7 (argon2, Credentials + JWT sessions, signup, authorize, middleware protection of `/dashboard` + `/chat` → `/signin`, GitHub OAuth commented out, Zod validation + typed errors).

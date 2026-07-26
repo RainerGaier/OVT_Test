@@ -37,7 +37,7 @@ automated testing.
 
 | Decision | Choice | Rationale |
 |---|---|---|
-| Application | Next.js 15, App Router, React 19, TypeScript | One repo, one language, UI and API together. No CORS, no second deploy, no API contract to keep in sync. |
+| Application | Next.js 16, App Router, React 19, TypeScript | One repo, one language, UI and API together. No CORS, no second deploy, no API contract to keep in sync. |
 | Styling | Tailwind 4 + shadcn/ui | Matches the Energy Analyser stack, so the idiom is already familiar. |
 | Data layer | Prisma + Postgres 16 | The schema will churn destructively under time pressure; Prisma's migrate-and-reset loop is the least painful place to do that. Prisma Studio also helps when debugging late. |
 | Auth | Auth.js v5, Credentials provider, argon2 | Open source, no third-party account, users live in our own database. |
