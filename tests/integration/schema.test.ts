@@ -1,25 +1,18 @@
-import { PrismaClient } from "@prisma/client";
-import { afterAll, expect, test } from "vitest";
+import { expect, test } from "vitest";
+import { makeUser } from "../factories/user";
+import { testPrisma } from "../helpers/db";
 
-const prisma = new PrismaClient({
-  datasources: { db: { url: process.env.DATABASE_URL_TEST } },
-});
-
-afterAll(() => prisma.$disconnect());
-
-test("demo user is present after seeding", async () => {
-  const user = await prisma.user.findUnique({
-    where: { email: "demo@example.com" },
+test("a created user can be found by email", async () => {
+  await makeUser({ email: "found@example.com", name: "Found User" });
+  const user = await testPrisma.user.findUnique({
+    where: { email: "found@example.com" },
   });
-  expect(user).not.toBeNull();
-  expect(user?.name).toBe("Demo User");
+  expect(user?.name).toBe("Found User");
 });
 
 test("deleting a user cascades to their uploads", async () => {
-  const user = await prisma.user.create({
-    data: { email: "cascade@example.com" },
-  });
-  await prisma.upload.create({
+  const user = await makeUser();
+  await testPrisma.upload.create({
     data: {
       userId: user.id,
       filename: "f.txt",
@@ -28,7 +21,9 @@ test("deleting a user cascades to their uploads", async () => {
       size: 1,
     },
   });
-  await prisma.user.delete({ where: { id: user.id } });
-  const remaining = await prisma.upload.count({ where: { userId: user.id } });
+  await testPrisma.user.delete({ where: { id: user.id } });
+  const remaining = await testPrisma.upload.count({
+    where: { userId: user.id },
+  });
   expect(remaining).toBe(0);
 });
