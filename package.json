@@ -12,6 +12,8 @@
     "test:integration": "dotenv -e .env.local -- vitest run --project node tests/integration",
     "test": "dotenv -e .env.local -- vitest run",
     "test:watch": "vitest",
+    "test:e2e:migrate": "dotenv -e .env.local -- cross-env-shell \"DATABASE_URL=$DATABASE_URL_TEST prisma migrate deploy\"",
+    "test:e2e": "npm run test:e2e:migrate && dotenv -e .env.local -- playwright test",
     "db:up": "docker compose up -d --wait db db-test",
     "db:down": "docker compose down",
     "db:reset": "prisma migrate reset --force",
@@ -38,6 +40,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",
@@ -46,6 +49,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.7.0",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.4.2",
     "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
