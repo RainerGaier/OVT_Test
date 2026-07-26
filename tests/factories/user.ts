@@ -1,5 +1,5 @@
-import argon2 from "argon2";
 import type { User } from "@prisma/client";
+import { hashPassword } from "@/lib/password";
 import { testPrisma } from "../helpers/db";
 
 let counter = 0;
@@ -13,7 +13,7 @@ export async function makeUser(
     data: {
       email: overrides.email ?? `user${counter}@example.com`,
       name: overrides.name ?? `User ${counter}`,
-      passwordHash: await argon2.hash(password),
+      passwordHash: await hashPassword(password),
     },
   });
 }
