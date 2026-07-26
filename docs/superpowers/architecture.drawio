@@ -1,0 +1,131 @@
+<mxfile host="app.diagrams.net" modified="2026-07-25T00:00:00.000Z" agent="hackathon-starter" version="24.0.0">
+  <diagram name="Solution Architecture" id="hackathon-starter-arch">
+    <mxGraphModel dx="900" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1020" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Container boxes (drawn first, behind components) -->
+        <mxCell id="vercel" value="Vercel — Next.js 15 (App Router: UI + /api route handlers)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;dashed=1;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="140" width="560" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="external" value="External services" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;dashed=1;verticalAlign=top;fontStyle=1;fontSize=13;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="680" y="140" width="300" height="420" as="geometry" />
+        </mxCell>
+
+        <!-- Client -->
+        <mxCell id="browser" value="Browser" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="40" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Middleware + pages (foundation) -->
+        <mxCell id="mw" value="middleware.ts&lt;br&gt;(edge runtime: route protection)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="70" y="190" width="210" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="pages" value="App Router pages&lt;br&gt;/ (landing)&lt;br&gt;/signin · /signup&lt;br&gt;/dashboard *&lt;br&gt;/chat *&lt;br&gt;&lt;i&gt;(* protected)&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;verticalAlign=top;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="70" y="258" width="210" height="122" as="geometry" />
+        </mxCell>
+
+        <!-- API route handlers -->
+        <mxCell id="apiAuth" value="/api/auth/[...nextauth]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="320" y="190" width="250" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="apiSignup" value="/api/signup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="320" y="232" width="250" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="apiChat" value="/api/chat  (streaming)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="320" y="274" width="250" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="apiUpload" value="/api/upload" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="320" y="316" width="250" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="apiReadings" value="/api/readings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="320" y="358" width="250" height="34" as="geometry" />
+        </mxCell>
+
+        <!-- lib/ modules -->
+        <mxCell id="libDb" value="lib/db.ts&lt;br&gt;Prisma singleton" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="448" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="libAuth" value="lib/auth.ts&lt;br&gt;+ auth.config.ts&lt;br&gt;Argon2 · JWT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="190" y="448" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="libAnthropic" value="lib/anthropic.ts&lt;br&gt;injectable client" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="320" y="448" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="libBlob" value="lib/blob.ts&lt;br&gt;injectable client" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="450" y="448" width="120" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- External services -->
+        <mxCell id="railway" value="Railway Postgres 16&lt;br&gt;&lt;br&gt;users · accounts · sessions&lt;br&gt;uploads · conversations&lt;br&gt;messages · readings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="720" y="196" width="220" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="anthropic" value="Anthropic API&lt;br&gt;claude-sonnet-5&lt;br&gt;(ANTHROPIC_MODEL)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="720" y="330" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="blob" value="Vercel Blob" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="720" y="448" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="e1" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="browser" target="mw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="protects /dashboard, /chat → /signin" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="mw" target="pages">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="fetch /api/*" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="pages" target="apiAuth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="apiAuth" target="libAuth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="apiSignup" target="libAuth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="apiChat" target="libAnthropic">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="apiUpload" target="libBlob">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="apiReadings" target="libDb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="prisma" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="libAuth" target="libDb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="Prisma" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="libDb" target="railway">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="streaming" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="libAnthropic" target="anthropic">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;fontSize=9;" edge="1" parent="1" source="libBlob" target="blob">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend" value="Legend&#10;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;align=left;verticalAlign=top;fontSize=11;fontStyle=1;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="680" y="596" width="300" height="164" as="geometry" />
+        </mxCell>
+        <mxCell id="legFound" value="Foundation + Auth (this plan)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="694" y="626" width="272" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legSlice" value="Capability slices (chat · upload · charts — later plans)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="694" y="662" width="272" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="legNote" value="Slice API routes also persist rows via lib/db&#10;(Upload, Conversation, Message, Reading)." style="text;html=1;align=left;verticalAlign=top;fontSize=9;spacingLeft=6;" vertex="1" parent="1">
+          <mxGeometry x="690" y="698" width="286" height="54" as="geometry" />
+        </mxCell>
+
+        <!-- Deployment notes -->
+        <mxCell id="deployNotes" value="Deployment&#10;• Vercel build runs `prisma migrate deploy` ONLY when VERCEL_ENV=production; previews build without migrating.&#10;• Preview deployments share the production Railway DB but never migrate it.&#10;• Production DATABASE_URL carries ?connection_limit=1&amp;pool_timeout=20 (serverless connection safety).&#10;• On Vercel: AUTH_TRUST_HOST=true and AUTH_URL unset — Auth.js infers the callback base URL per deployment host (prod + previews).&#10;• Sessions are JWT-backed; users/accounts persist in Postgres. GitHub OAuth configured but commented out." style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;fontSize=11;fontStyle=1;spacingLeft=8;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="596" width="610" height="164" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
