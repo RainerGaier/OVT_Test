@@ -21,3 +21,10 @@ A deployed, tested Next.js starter: authentication, Claude, uploads, and charts.
 - `npm run test:ci` — everything with coverage thresholds enforced
 
 > The e2e suite runs on port **3100** (not the dev server's 3000) so it never collides with a running `next dev`.
+
+## Deployment
+
+- **App:** Vercel. Build command (in `vercel.json`) runs `prisma migrate deploy` only when `VERCEL_ENV=production`; previews build without migrating.
+- **Database:** Railway Postgres with public networking. Production `DATABASE_URL` carries `?connection_limit=1&pool_timeout=20`.
+- **Auth base URL:** on Vercel, set `AUTH_TRUST_HOST=true` and leave `AUTH_URL` unset — Auth.js infers the callback base URL from each deployment's host, so production and every preview URL work unchanged.
+- Preview deployments share the production database but never migrate it: a branch needing a new migration only works once merged and deployed to production.
