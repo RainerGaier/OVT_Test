@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16.4
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: app_test
+        ports: ["5433:5432"]
+        options: >-
+          --health-cmd "pg_isready -U app -d app_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL_TEST: postgresql://app:test@localhost:5433/app_test?schema=public
+      DATABASE_URL: postgresql://app:test@localhost:5433/app_test?schema=public
+      AUTH_SECRET: ci-secret
+      AUTH_URL: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx prisma generate
+      - run: npx prisma migrate deploy
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npx vitest run --coverage
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-and-report
+          path: |
+            coverage/
+            playwright-report/

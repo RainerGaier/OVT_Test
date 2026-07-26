@@ -22,6 +22,27 @@ export default defineConfig({
         inline: [/next-auth/, /@auth\//],
       },
     },
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "src/components/ui/**",
+        "src/**/*.d.ts",
+        // Verified end-to-end by Playwright, not by vitest: App Router pages
+        // and route handlers (thin HTTP/render glue over src/lib) and the
+        // Auth.js proxy wiring. Their logic lives in src/lib, which carries
+        // the 90% bar. Including them here would measure e2e-only surfaces
+        // against the vitest run and understate real coverage.
+        "src/app/**",
+        "src/proxy.ts",
+      ],
+      thresholds: {
+        lines: 80,
+        branches: 80,
+        "src/lib/**": { lines: 90, branches: 90 },
+      },
+    },
     projects: [
       {
         extends: true,
