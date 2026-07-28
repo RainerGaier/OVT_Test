@@ -24,7 +24,10 @@ jobs:
       DATABASE_URL_TEST: postgresql://app:test@localhost:5433/app_test?schema=public
       DATABASE_URL: postgresql://app:test@localhost:5433/app_test?schema=public
       AUTH_SECRET: ci-secret
-      AUTH_URL: http://localhost:3000
+      # The only server that boots in CI is Playwright's `next dev -p 3100`
+      # (playwright.config.ts also sets AUTH_URL=3100 for that subprocess).
+      # Nothing serves on 3000 here, so keep this aligned with the e2e port.
+      AUTH_URL: http://localhost:3100
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
