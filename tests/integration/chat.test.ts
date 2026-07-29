@@ -19,6 +19,17 @@ test("prepareChatTurn creates a conversation and saves the user message when non
   expect(convo?.messages.map((m) => m.content)).toEqual(["hello there"]);
 });
 
+test("prepareChatTurn treats a null conversationId as a new conversation", async () => {
+  const user = await makeUser();
+  const result = await prepareChatTurn(user.id, {
+    conversationId: null,
+    message: "hello there",
+  });
+  expect(result.isNew).toBe(true);
+  const convo = await getConversation(user.id, result.conversationId);
+  expect(convo?.messages.map((m) => m.content)).toEqual(["hello there"]);
+});
+
 test("prepareChatTurn appends to an existing owned conversation", async () => {
   const user = await makeUser();
   const convo = await makeConversation(user.id);

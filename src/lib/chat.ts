@@ -18,7 +18,7 @@ export class ChatError extends Error {
 }
 
 const chatSchema = z.object({
-  conversationId: z.string().optional(),
+  conversationId: z.string().min(1).nullish(),
   message: z.string().min(1),
 });
 
