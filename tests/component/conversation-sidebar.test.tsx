@@ -42,3 +42,18 @@ test("fires onNew and onDelete", async () => {
   await user.click(screen.getAllByRole("button", { name: /delete/i })[0]);
   expect(onDelete).toHaveBeenCalledWith("1");
 });
+
+test("disables actions while streaming", async () => {
+  const onNew = vi.fn();
+  render(
+    <ConversationSidebar
+      conversations={convos}
+      activeId="1"
+      onSelect={vi.fn()}
+      onNew={onNew}
+      onDelete={vi.fn()}
+      disabled={true}
+    />,
+  );
+  expect(screen.getByRole("button", { name: /new chat/i })).toBeDisabled();
+});

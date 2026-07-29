@@ -56,6 +56,18 @@ export function ChatClient({
       const newId = res.headers.get("X-Conversation-Id");
       if (newId) setActiveId(newId);
 
+      if (!res.ok) {
+        setMessages((m) => {
+          const copy = [...m];
+          copy[copy.length - 1] = {
+            role: "assistant",
+            content: "Something went wrong. Please try again.",
+          };
+          return copy;
+        });
+        return;
+      }
+
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
       while (reader) {
@@ -85,6 +97,7 @@ export function ChatClient({
         onSelect={selectConversation}
         onNew={newChat}
         onDelete={deleteConversation}
+        disabled={streaming}
       />
       <main className="flex flex-1 flex-col gap-4 p-4">
         <div className="flex-1 overflow-y-auto">
