@@ -22,6 +22,8 @@ export default defineConfig({
       AUTH_URL: BASE_URL,
       ANTHROPIC_MOCK: "1",
       ANTHROPIC_API_KEY: "e2e-not-used",
+      BLOB_MOCK: "1",
+      BLOB_READ_WRITE_TOKEN: "e2e-not-used",
     },
   },
 });
