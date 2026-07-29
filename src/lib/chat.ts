@@ -19,7 +19,7 @@ export class ChatError extends Error {
 
 const chatSchema = z.object({
   conversationId: z.string().min(1).nullish(),
-  message: z.string().min(1),
+  message: z.string().min(1).max(20000),
 });
 
 export async function prepareChatTurn(

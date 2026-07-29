@@ -43,11 +43,11 @@ export async function POST(request: Request) {
         await finishChatTurn(conversationId, isNew, firstUserMessage, assistantText);
         controller.close();
       } catch (err) {
+        console.error("chat stream failed:", err);
         // Anthropic failed mid-stream: mark the stream errored and keep the
         // user message; the partial assistant reply is discarded.
         controller.enqueue(encoder.encode("\n\n[error] Claude is unavailable. Please retry."));
         controller.close();
-        void err;
       }
     },
   });

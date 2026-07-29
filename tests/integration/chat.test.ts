@@ -74,6 +74,13 @@ test("prepareChatTurn rejects invalid input with 400", async () => {
   );
 });
 
+test("prepareChatTurn rejects an over-long message with 400", async () => {
+  const user = await makeUser();
+  await expect(
+    prepareChatTurn(user.id, { message: "x".repeat(20001) }),
+  ).rejects.toMatchObject({ status: 400 });
+});
+
 test("finishChatTurn saves the assistant message and titles a new conversation", async () => {
   setAnthropicClient({
     messages: {
