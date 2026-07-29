@@ -1,3 +1,6 @@
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 export type UiMessage = { role: "user" | "assistant"; content: string };
 
 export function ChatTranscript({ messages }: { messages: UiMessage[] }) {
@@ -20,7 +23,19 @@ export function ChatTranscript({ messages }: { messages: UiMessage[] }) {
               : "self-start rounded-lg bg-muted px-3 py-2"
           }
         >
-          {m.content}
+          {m.role === "assistant" ? (
+            // Claude's replies are markdown. Render them (GFM: tables,
+            // strikethrough, task lists); no raw HTML is allowed, so this is
+            // XSS-safe. User messages stay verbatim so their literal text
+            // (e.g. a leading "#") is shown as typed.
+            <div className="prose prose-sm dark:prose-invert max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {m.content}
+              </ReactMarkdown>
+            </div>
+          ) : (
+            m.content
+          )}
         </div>
       ))}
     </div>
