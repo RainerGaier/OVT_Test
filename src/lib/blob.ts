@@ -24,7 +24,7 @@ function getClient(): BlobLike {
     client = makeMockBlob();
     return client;
   }
-  /* v8 ignore next 8 -- real Vercel Blob calls need a live token; covered in prod, not tests */
+  /* v8 ignore start -- real Vercel Blob calls need a live token; covered in prod, not tests */
   client = {
     async put(pathname, body, contentType) {
       const res = await put(pathname, body, { access: "public", contentType });
@@ -35,6 +35,7 @@ function getClient(): BlobLike {
     },
   };
   return client;
+  /* v8 ignore stop */
 }
 
 /** Test seam: inject a fake blob client, or null to reset. */
