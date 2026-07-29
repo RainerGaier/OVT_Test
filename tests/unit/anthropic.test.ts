@@ -69,3 +69,19 @@ test("generateTitle falls back to the truncated first message on failure", async
   const title = await generateTitle(long, "whatever");
   expect(title).toBe("x".repeat(50));
 });
+
+test("uses the hermetic mock when ANTHROPIC_MOCK is set", async () => {
+  setAnthropicClient(null);
+  process.env.ANTHROPIC_MOCK = "1";
+  try {
+    const chunks: string[] = [];
+    for await (const c of streamChat([{ role: "user", content: "hi" }])) {
+      chunks.push(c);
+    }
+    expect(chunks.join("")).toBe("This is a mocked streamed reply.");
+    expect(await generateTitle("q", "a")).toBe("Mock Title");
+  } finally {
+    delete process.env.ANTHROPIC_MOCK;
+    setAnthropicClient(null);
+  }
+});

@@ -23,8 +23,35 @@ export interface AnthropicLike {
 
 let client: AnthropicLike | null = null;
 
+function makeMockClient(): AnthropicLike {
+  return {
+    messages: {
+      stream() {
+        const text = "This is a mocked streamed reply.";
+        return (async function* () {
+          for (const ch of text) {
+            yield {
+              type: "content_block_delta",
+              delta: { type: "text_delta", text: ch },
+            };
+          }
+        })();
+      },
+      async create() {
+        return { content: [{ type: "text", text: "Mock Title" }] };
+      },
+    },
+  };
+}
+
 function getClient(): AnthropicLike {
-  if (!client) client = new Anthropic() as unknown as AnthropicLike;
+  if (client) return client;
+  if (process.env.ANTHROPIC_MOCK) {
+    client = makeMockClient();
+    return client;
+  }
+  /* v8 ignore next 2 -- real SDK construction needs a live key; covered by prod, not tests */
+  client = new Anthropic() as unknown as AnthropicLike;
   return client;
 }
 
