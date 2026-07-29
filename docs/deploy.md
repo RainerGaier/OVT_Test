@@ -56,9 +56,11 @@ dashboards (and your terminal for the secret). No code changes are required.
   | `AUTH_TRUST_HOST` | `true` | lets Auth.js trust the deployment host |
   | `AUTH_URL` | **(unset — do not add)** | inferred from the request host |
   | `ANTHROPIC_API_KEY` | Claude API key for the chat feature | from console.anthropic.com |
+  | `BLOB_READ_WRITE_TOKEN` | Vercel Blob token for file upload | Vercel dashboard → Storage → Blob |
 
 - [ ] Do **NOT** set `DATABASE_URL_TEST` on Vercel — it is local/CI only.
 - [ ] Do **NOT** set `ANTHROPIC_MOCK` on Vercel — it's a local/CI e2e seam only.
+- [ ] Do **NOT** set `BLOB_MOCK` on Vercel — it's a local/CI e2e seam only.
 
 > `AUTH_URL` must stay unset so the same config works for production *and* every
 > preview URL. Setting it would pin callbacks to one host and break previews.

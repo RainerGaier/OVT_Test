@@ -10,6 +10,8 @@ A deployed, tested Next.js starter: authentication, Claude, uploads, and charts.
 2. Copy `.env.example` to `.env.local` and fill in values (`npx auth secret` for `AUTH_SECRET`).
 
    > The chat feature needs `ANTHROPIC_API_KEY` in `.env.local` (get one at console.anthropic.com). Optionally set `ANTHROPIC_MODEL` (defaults to `claude-sonnet-5`).
+
+   > File upload needs `BLOB_READ_WRITE_TOKEN` in `.env.local` (create a Blob store in the Vercel dashboard → Storage → Blob, then copy its token).
 3. `npm run db:up` — start dev and test Postgres (Docker).
 4. `npx prisma migrate deploy && npx prisma db seed` — set up the dev DB.
 5. `npm run dev` — start the app on http://localhost:3000.
