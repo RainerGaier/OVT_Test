@@ -20,6 +20,8 @@ export default defineConfig({
       DATABASE_URL: TEST_DB,
       AUTH_SECRET: process.env.AUTH_SECRET ?? "e2e-secret",
       AUTH_URL: BASE_URL,
+      ANTHROPIC_MOCK: "1",
+      ANTHROPIC_API_KEY: "e2e-not-used",
     },
   },
 });

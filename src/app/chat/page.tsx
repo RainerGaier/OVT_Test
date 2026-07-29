@@ -1,8 +1,17 @@
-export default function ChatPage() {
+import { auth } from "@/lib/auth";
+import { listConversations } from "@/lib/conversations";
+import { ChatClient } from "@/components/chat/chat-client";
+
+export default async function ChatPage() {
+  const session = await auth();
+  const userId = session?.user?.id;
+  const conversations = userId ? await listConversations(userId) : [];
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4">
-      <h1 className="text-2xl font-bold">Chat</h1>
-      <p className="text-muted-foreground">Claude conversation lands here.</p>
-    </main>
+    <ChatClient
+      initialConversations={conversations.map((c) => ({
+        id: c.id,
+        title: c.title,
+      }))}
+    />
   );
 }
