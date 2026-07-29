@@ -28,7 +28,8 @@ test("sign in, upload a file, see it listed, and delete it", async ({ page }) =>
   // room than the default 5s before treating it as a real failure.
   await expect(page.getByText("hello.txt")).toBeVisible({ timeout: 15_000 });
 
-  // Delete it.
+  // Delete it. Allow extra time: the DELETE route compiles on first hit in
+  // dev mode, which can race the default 5s assertion timeout on slow CI.
   await page.getByRole("button", { name: /delete hello\.txt/i }).click();
-  await expect(page.getByText("hello.txt")).toHaveCount(0);
+  await expect(page.getByText("hello.txt")).toHaveCount(0, { timeout: 15_000 });
 });
