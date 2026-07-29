@@ -19,7 +19,7 @@ export default defineConfig({
     // instead, which does extension-probing like a bundler, so it resolves.
     server: {
       deps: {
-        inline: [/next-auth/, /@auth\//, /@anthropic-ai\//],
+        inline: [/next-auth/, /@auth\//, /@anthropic-ai\//, /@vercel\/blob/],
       },
     },
     coverage: {
