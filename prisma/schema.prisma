@@ -2,6 +2,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Generates docs/ERD.md (Mermaid) from this schema on `prisma generate`.
+// Gated by DISABLE_ERD so it never runs on Vercel builds (set there); local only.
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "../docs/ERD.md"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
