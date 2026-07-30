@@ -38,7 +38,11 @@ export function ReadingsPanel() {
   async function loadSample() {
     setLoading(true);
     try {
-      await fetch("/api/readings/sample", { method: "POST" });
+      const res = await fetch("/api/readings/sample", { method: "POST" });
+      if (!res.ok) {
+        setError("Couldn't load sample data.");
+        return;
+      }
       await load(days);
     } catch {
       setError("Couldn't load sample data.");

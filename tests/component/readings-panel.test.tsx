@@ -59,6 +59,21 @@ test("changing the range refetches with the selected days", async () => {
   );
 });
 
+test("a failed sample-load POST surfaces an error with a working retry", async () => {
+  const user = userEvent.setup();
+  // First GET: empty. POST sample fails (resolves, non-ok).
+  fetchMock
+    .mockResolvedValueOnce(jsonResponse([]))
+    .mockResolvedValueOnce(jsonResponse({}, 500));
+
+  render(<ReadingsPanel />);
+  const loadBtn = await screen.findByRole("button", { name: /load sample data/i });
+  await user.click(loadBtn);
+
+  expect(await screen.findByText(/couldn't load sample data/i)).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
+});
+
 test("a failed initial fetch shows an error with a working retry", async () => {
   const user = userEvent.setup();
   fetchMock
