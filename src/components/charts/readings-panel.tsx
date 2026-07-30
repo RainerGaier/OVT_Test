@@ -11,10 +11,20 @@ export function ReadingsPanel() {
   const [days, setDays] = useState<RangeDays>(30);
   const [data, setData] = useState<Reading[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async (range: RangeDays) => {
-    const res = await fetch(`/api/readings?days=${range}`);
-    if (res.ok) setData((await res.json()) as Reading[]);
+    try {
+      const res = await fetch(`/api/readings?days=${range}`);
+      if (res.ok) {
+        setData((await res.json()) as Reading[]);
+        setError(null);
+      } else {
+        setError("Couldn't load trends.");
+      }
+    } catch {
+      setError("Couldn't load trends.");
+    }
   }, []);
 
   useEffect(() => {
@@ -30,9 +40,27 @@ export function ReadingsPanel() {
     try {
       await fetch("/api/readings/sample", { method: "POST" });
       await load(days);
+    } catch {
+      setError("Couldn't load sample data.");
     } finally {
       setLoading(false);
     }
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-start gap-3 rounded-lg border border-dashed p-6">
+        <p className="text-muted-foreground text-sm">{error}</p>
+        <Button
+          onClick={() => {
+            setError(null);
+            void load(days);
+          }}
+        >
+          Retry
+        </Button>
+      </div>
+    );
   }
 
   if (data === null) {

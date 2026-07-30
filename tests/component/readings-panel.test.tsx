@@ -58,3 +58,22 @@ test("changing the range refetches with the selected days", async () => {
     expect(fetchMock).toHaveBeenLastCalledWith("/api/readings?days=7"),
   );
 });
+
+test("a failed initial fetch shows an error with a working retry", async () => {
+  const user = userEvent.setup();
+  fetchMock
+    .mockResolvedValueOnce({ ok: false, status: 500, json: async () => ({}) } as Response)
+    .mockResolvedValueOnce(
+      jsonResponse([{ label: "Revenue", value: 1, recordedAt: "2026-07-30" }]),
+    );
+
+  render(<ReadingsPanel />);
+
+  expect(await screen.findByText(/couldn't load trends/i)).toBeInTheDocument();
+  const retryBtn = screen.getByRole("button", { name: /retry/i });
+
+  await user.click(retryBtn);
+
+  await waitFor(() => expect(screen.getByTestId("chart-stub")).toBeInTheDocument());
+  expect(fetchMock).toHaveBeenNthCalledWith(2, "/api/readings?days=30");
+});
