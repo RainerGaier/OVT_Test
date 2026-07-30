@@ -90,7 +90,7 @@ export function ChatClient({
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-[calc(100vh-3.5rem)]">
       <ConversationSidebar
         conversations={conversations}
         activeId={activeId}
@@ -99,8 +99,8 @@ export function ChatClient({
         onDelete={deleteConversation}
         disabled={streaming}
       />
-      <main className="flex flex-1 flex-col gap-4 p-4">
-        <div className="flex-1 overflow-y-auto">
+      <main className="flex min-h-0 flex-1 flex-col gap-4 p-4">
+        <div className="min-h-0 flex-1 overflow-y-auto">
           <ChatTranscript messages={messages} />
         </div>
         <MessageComposer onSend={send} disabled={streaming} />
