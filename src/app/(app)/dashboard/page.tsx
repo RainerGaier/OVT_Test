@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { listUploads } from "@/lib/uploads";
 import { UploadPanel } from "@/components/upload/upload-panel";
+import { ReadingsPanel } from "@/components/charts/readings-panel";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -14,6 +15,10 @@ export default async function DashboardPage() {
           Upload files (images, CSV/text, PDF) and manage them here.
         </p>
       </div>
+      <section className="flex flex-col gap-3">
+        <h2 className="text-lg font-semibold">Trends</h2>
+        <ReadingsPanel />
+      </section>
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-semibold">Uploads</h2>
         <UploadPanel

@@ -1,11 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../src/lib/password";
+import { sampleReadings } from "../src/lib/readings";
 
 const prisma = new PrismaClient();
 
 async function main() {
   const passwordHash = await hashPassword("demo-password-123");
-  await prisma.user.upsert({
+  const demo = await prisma.user.upsert({
     where: { email: "demo@example.com" },
     update: {},
     create: {
@@ -14,6 +15,10 @@ async function main() {
       passwordHash,
     },
   });
+
+  // Deterministic sample readings for the demo user (idempotent reseed).
+  await prisma.reading.deleteMany({ where: { userId: demo.id } });
+  await prisma.reading.createMany({ data: sampleReadings(demo.id) });
 }
 
 main()
