@@ -40,9 +40,11 @@ export function sampleReadings(userId: string, now: Date = new Date()): NewReadi
 
 // Replace the user's readings with a fresh deterministic set. Idempotent.
 export async function generateSampleReadings(userId: string): Promise<number> {
-  await prisma.reading.deleteMany({ where: { userId } });
-  const result = await prisma.reading.createMany({ data: sampleReadings(userId) });
-  return result.count;
+  return prisma.$transaction(async (tx) => {
+    await tx.reading.deleteMany({ where: { userId } });
+    const result = await tx.reading.createMany({ data: sampleReadings(userId) });
+    return result.count;
+  });
 }
 
 // The user's readings within the last `days`, oldest first.
